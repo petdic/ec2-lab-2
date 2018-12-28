@@ -1,6 +1,6 @@
 # ec2-lab
 
-## setup ec2 key pairs
+## Setup EC2 key pairs
 
 ```
 Setup and download key pairs before deploy
