@@ -9,5 +9,5 @@ Setup and download key pairs before deploy
 ## Deploy
 
 ```
-Deploy the ec2 instance with instance security group
+Deploy ec2 instance along with instance security group
 ```
