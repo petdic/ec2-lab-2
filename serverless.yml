@@ -1,0 +1,52 @@
+service: ec2-lab
+
+frameworkVersion: ">=1.27.2 <2.0.0"
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  defaultStage: dev
+
+provider:
+  name: aws
+  region: us-east-1
+  runtime: nodejs6.10
+
+functions:
+
+resources:
+  Resources:
+    InstanceSecurityGroup:
+      Type: AWS::EC2::SecurityGroup
+      Properties:
+        GroupName: "Ec2DMZ"
+        GroupDescription: "SSH HTTP HTTPS for DMZ"
+        SecurityGroupIngress:
+          - IpProtocol: "tcp"
+            FromPort: 22
+            ToPort: 22
+            CidrIp: "0.0.0.0/0"
+          - IpProtocol: "tcp"
+            FromPort: 80
+            ToPort: 80
+            CidrIp: "0.0.0.0/0"
+          - IpProtocol: "tcp"
+            FromPort: 443
+            ToPort: 443
+            CidrIp: "0.0.0.0/0"
+    Ec2Instance:
+      Type: AWS::EC2::Instance
+      Properties:
+        ImageId: "ami-0080e4c5bc078760e" #Amazon Linux AMI HVM
+        InstanceType: "t2.micro"
+        KeyName: "MyEc2-Lab-Key" #setup key pair before deploy
+        SecurityGroups:
+          - Ref: "InstanceSecurityGroup" #!GetAtt InstanceSecurityGroup.GroupName (i think)
+        BlockDeviceMappings:
+          - DeviceName: "/dev/xvda"
+            Ebs:
+              VolumeType: "standard"
+              DeleteOnTermination: "true"
+              VolumeSize: "8"
+        Tags:
+          - Key: "Name"
+            Value: "Ec2-Lab"
