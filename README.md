@@ -1,4 +1,4 @@
-# ec2-lab
+# ec2-lab-2
 
 ## Setup EC2 key pairs
 
