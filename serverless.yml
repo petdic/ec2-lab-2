@@ -33,14 +33,14 @@ resources:
             FromPort: 443
             ToPort: 443
             CidrIp: "0.0.0.0/0"
-    Ec2Instance:
+    Ec2Instance1:
       Type: AWS::EC2::Instance
       Properties:
         ImageId: "ami-0080e4c5bc078760e" #Amazon Linux AMI HVM
         InstanceType: "t2.micro"
         KeyName: "MyEc2-Lab-Key" #setup key pair before deploy
         SecurityGroups:
-          - Ref: "InstanceSecurityGroup" #!GetAtt InstanceSecurityGroup.GroupName (i think)
+          - Ref: "InstanceSecurityGroup"
           - "default"
         BlockDeviceMappings:
           - DeviceName: "/dev/xvda"
@@ -55,7 +55,61 @@ resources:
               VolumeSize: "15"
         Tags:
           - Key: "Name"
-            Value: "Ec2-Lab-2"
+            Value: "Ec2-Lab-2.1"
+    Ec2Instance2:
+      Type: AWS::EC2::Instance
+      Properties:
+        ImageId: "ami-0080e4c5bc078760e" #Amazon Linux AMI HVM
+        InstanceType: "t2.micro"
+        KeyName: "MyEc2-Lab-Key" #setup key pair before deploy
+        SecurityGroups:
+          - Ref: "InstanceSecurityGroup"
+          - "default"
+        BlockDeviceMappings:
+          - DeviceName: "/dev/xvda"
+            Ebs:
+              VolumeType: "gp2"
+              DeleteOnTermination: "true"
+              VolumeSize: "8"
+          - DeviceName: "/dev/sdf"
+            Ebs:
+              VolumeType: "standard"
+              DeleteOnTermination: "true"
+              VolumeSize: "15"
+        Tags:
+          - Key: "Name"
+            Value: "Ec2-Lab-2.2"
+    ElasticLoadBalancer:
+      Type: AWS::ElasticLoadBalancing::LoadBalancer
+      Properties:
+        CrossZone: "true"
+        ConnectionDrainingPolicy:
+          Enabled: "true"
+          Timeout: "300"
+        AvailabilityZones:
+          Fn::GetAZs:
+            Ref: "AWS::Region"
+        Instances:
+          - Ref: Ec2Instance1
+          - Ref: Ec2Instance2
+        Listeners:
+          - LoadBalancerPort: "80"
+            Protocol: "HTTP"
+            InstancePort: "80"
+            InstanceProtocol: "HTTP"
+        HealthCheck:
+          HealthyThreshold: "3"
+          UnhealthyThreshold: "2"
+          Interval: "10"
+          Timeout: "5"
+          Target:
+            Fn::Join:
+              - ""
+              - - "HTTP:"
+                - "80"
+                - "/index.html"
+        SecurityGroups:
+          - Fn::GetAtt: [InstanceSecurityGroup, GroupId]
     FileSystem:
       Type: AWS::EFS::FileSystem
     MountTarget:
@@ -63,6 +117,6 @@ resources:
       Properties:
         FileSystemId:
           Ref: "FileSystem"
-        SubnetId: "xxxxx"
+        SubnetId: "xxxx" #look in VPC AWS Console and select a subnet
         SecurityGroups:
-          - "xxxx"
+          - "xxxx" #default security group vpc
