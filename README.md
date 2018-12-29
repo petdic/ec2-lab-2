@@ -1,5 +1,9 @@
 # ec2-lab-2
 
+```
+Same as ec2-lab however contains another ebs
+```
+
 ## Setup EC2 key pairs
 
 ```

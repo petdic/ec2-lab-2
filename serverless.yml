@@ -33,12 +33,6 @@ resources:
             FromPort: 443
             ToPort: 443
             CidrIp: "0.0.0.0/0"
-    Volume:
-      Type: AWS::EC2::Volume
-      Properties:
-        AvailabilityZone: { "Fn::GetAtt": ["Ec2Instance", "AvailabilityZone"] }
-        Size: "10"
-        VolumeType: "standard"
     Ec2Instance:
       Type: AWS::EC2::Instance
       Properties:
@@ -47,9 +41,17 @@ resources:
         KeyName: "MyEc2-Lab-Key" #setup key pair before deploy
         SecurityGroups:
           - Ref: "InstanceSecurityGroup" #!GetAtt InstanceSecurityGroup.GroupName (i think)
+        BlockDeviceMappings:
+          - DeviceName: "/dev/xvda"
+            Ebs:
+              VolumeType: "gp2"
+              DeleteOnTermination: "true"
+              VolumeSize: "8"
+          - DeviceName: "/dev/sdf"
+            Ebs:
+              VolumeType: "standard"
+              DeleteOnTermination: "true"
+              VolumeSize: "15"
         Tags:
           - Key: "Name"
             Value: "Ec2-Lab-2"
-        Volumes:
-          - Device: "/dev/xvda"
-            VolumeId: { "Ref": "Volume" }
