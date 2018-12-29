@@ -41,6 +41,7 @@ resources:
         KeyName: "MyEc2-Lab-Key" #setup key pair before deploy
         SecurityGroups:
           - Ref: "InstanceSecurityGroup" #!GetAtt InstanceSecurityGroup.GroupName (i think)
+          - "default"
         BlockDeviceMappings:
           - DeviceName: "/dev/xvda"
             Ebs:
@@ -55,3 +56,13 @@ resources:
         Tags:
           - Key: "Name"
             Value: "Ec2-Lab-2"
+    FileSystem:
+      Type: AWS::EFS::FileSystem
+    MountTarget:
+      Type: AWS::EFS::MountTarget
+      Properties:
+        FileSystemId:
+          Ref: "FileSystem"
+        SubnetId: "xxxxx"
+        SecurityGroups:
+          - "xxxx"
