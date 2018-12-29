@@ -1,7 +1,10 @@
 # ec2-lab-2
 
 ```
-Same as ec2-lab however contains another ebs
+Same as ec2-lab however contains more EBS and an EFS
+
+Change SubnetId and SecurityGroups for MountTarget.
+Ensure that the Ec2Instance SecurityGroups contains same VPC security group as MountTarget SecurityGroups
 ```
 
 ## Setup EC2 key pairs
