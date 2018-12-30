@@ -1,9 +1,7 @@
 # ec2-lab-2
 
 ```
-Same as ec2-lab however contains more EBS (Elastic Block Store) and an EFS (Elastic File Server)
-
-Contains 2 EC2 Instances
+Contains 2 EC2 Instances along with EBS's (Elastic Block Store) and an EFS (Elastic File Server)
 
 Contains ElasticLoadBalancer
 Ensure ElasticLoadBalancer SecurityGroup is same as Ec2Instance
