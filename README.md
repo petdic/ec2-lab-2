@@ -41,7 +41,16 @@ run "sudo su" - sudo not needed for commands
 
 ```
 
-## Update Server, Install Apache and Run Apache on all EC2 Instances
+## Bash Script
+
+```
+EC2 Instances have bash scripts attached to skip the Server Step below.
+This is accomplished by creating a bash script.
+The script is then converted into base64 by using the command "base64 ec2_startup.sh > ec2_startup.sh.base64"
+The ec2_startup.sh.base64 is then attached as UserData to the EC2Instances that will run automatically when the instances are created.
+```
+
+## Server Step - Update Server, Install Apache and Run Apache on all EC2 Instances
 
 ```
 Apply updates:
