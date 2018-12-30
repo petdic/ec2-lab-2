@@ -56,6 +56,7 @@ resources:
         Tags:
           - Key: "Name"
             Value: "Ec2-Lab-2.1"
+        UserData: ${file(scripts/ec2_startup.sh.base64)}
     Ec2Instance2:
       Type: AWS::EC2::Instance
       Properties:
@@ -79,6 +80,7 @@ resources:
         Tags:
           - Key: "Name"
             Value: "Ec2-Lab-2.2"
+        UserData: ${file(scripts/ec2_startup.sh.base64)}
     ElasticLoadBalancer:
       Type: AWS::ElasticLoadBalancing::LoadBalancer
       Properties:
