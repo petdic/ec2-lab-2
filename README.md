@@ -6,8 +6,9 @@ Contains 2 EC2 Instances along with EBS's (Elastic Block Store) and an EFS (Elas
 Contains ElasticLoadBalancer
 Ensure ElasticLoadBalancer SecurityGroup is same as Ec2Instance
 
-
-For MountTarget change SubnetId and SecurityGroups.
+Ensure that MountTargets are in same AvailabilityZones as EC2Instances.
+You can add more MountTargets to ensure all AvailabilityZones are covered.
+For MountTargets change SubnetId and SecurityGroups.
 Ensure that the EC2 Instance SecurityGroups contains same security group as MountTarget SecurityGroups (default - security group (VPC))
 ```
 
@@ -47,7 +48,7 @@ run "sudo su" - sudo not needed for commands
 EC2 Instances have bash scripts attached to skip the Server Step below.
 This is accomplished by creating a bash script.
 The script is then converted into base64 by using the command "base64 ec2_startup.sh > ec2_startup.sh.base64"
-The ec2_startup.sh.base64 is then attached as UserData to the EC2Instances that will run automatically when the instances are created.
+The ec2_startup.sh.base64 is then attached to UserData for the EC2Instances, this will run automatically when the instances are created.
 ```
 
 ## Server Step - Update Server, Install Apache and Run Apache on all EC2 Instances
@@ -69,7 +70,7 @@ run "sudo service httpd start"
 Navigate to EFS in AWS Console
 Locate EFS and select Amazon EC2 mount instructions
 Mount the file system using the NFS client - if you using Amazon Linux AMI else follow all instructions
-*Note* at end of command, the directory to be mounted must be /var/www/html not /efs
+*Note* at end of command, the directory to be mounted must be /var/www/html not /efs for Apache
 ```
 
 ## Create index.html, this should be shared on all EC2 Instances

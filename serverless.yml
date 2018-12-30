@@ -114,11 +114,20 @@ resources:
           - Fn::GetAtt: [InstanceSecurityGroup, GroupId]
     FileSystem:
       Type: AWS::EFS::FileSystem
-    MountTarget:
+    MountTarget1:
       Type: AWS::EFS::MountTarget
       Properties:
         FileSystemId:
           Ref: "FileSystem"
         SubnetId: "xxxx" #look in VPC AWS Console and select a subnet
         SecurityGroups:
-          - "xxxx" #default security group vpc
+          - "xxxx" #id of default security group vpc
+    MountTarget2:
+      Type: AWS::EFS::MountTarget
+      Properties:
+        FileSystemId:
+          Ref: "FileSystem"
+        SubnetId: "xxxx" #look in VPC AWS Console and select a subnet
+        SecurityGroups:
+          - "xxxx" #id of default security group vpc
+
