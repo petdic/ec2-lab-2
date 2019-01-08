@@ -112,6 +112,55 @@ resources:
                 - "/index.html"
         SecurityGroups:
           - Fn::GetAtt: [InstanceSecurityGroup, GroupId]
+        Tags:
+          - Key: "ClassicELB"
+            Value: "On"
+    ElasticLoadBalancer2:
+      Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+      Properties:
+        Subnets:
+          - "xxxa"
+          - "xxxb"
+          - "xxxc"
+          - "xxxd"
+          - "xxxe"
+          - "xxxf"
+        SecurityGroups:
+          - Fn::GetAtt: [InstanceSecurityGroup, GroupId]
+        Tags:
+          - Key: "ApplicationELB"
+            Value: "On"
+    ElasticLoadBalancer2Listener:
+      Type: AWS::ElasticLoadBalancingV2::Listener
+      Properties:
+        DefaultActions:
+          - Type: "forward"
+            TargetGroupArn:
+              Ref: "ElasticLoadBalancer2TargetGroup"
+        LoadBalancerArn:
+          Ref: ElasticLoadBalancer2
+        Port: "80"
+        Protocol: "HTTP"
+    ElasticLoadBalancer2TargetGroup:
+      Type: AWS::ElasticLoadBalancingV2::TargetGroup
+      Properties:
+        Port: "80"
+        Protocol: "HTTP"
+        HealthCheckIntervalSeconds: "10"
+        HealthCheckPath: "/index.html"
+        HealthCheckPort: "80"
+        HealthCheckProtocol: "HTTP"
+        HealthCheckTimeoutSeconds: "5"
+        HealthyThresholdCount: "3"
+        UnhealthyThresholdCount: "2"
+        Matcher:
+          HttpCode: "200-299"
+        Targets:
+          - Id:
+              Ref: "Ec2Instance1"
+          - Id:
+              Ref: "Ec2Instance2"
+        VpcId: "xxxx"
     FileSystem:
       Type: AWS::EFS::FileSystem
     MountTarget1:
@@ -119,15 +168,47 @@ resources:
       Properties:
         FileSystemId:
           Ref: "FileSystem"
-        SubnetId: "xxxx" #look in VPC AWS Console and select a subnet
+        SubnetId: "xxxa" #look in VPC AWS Console and select a subnet
         SecurityGroups:
-          - "xxxx" #id of default security group vpc
+          - "sg-xxxx" #id of default security group vpc
     MountTarget2:
       Type: AWS::EFS::MountTarget
       Properties:
         FileSystemId:
           Ref: "FileSystem"
-        SubnetId: "xxxx" #look in VPC AWS Console and select a subnet
+        SubnetId: "xxxb" #look in VPC AWS Console and select a subnet
         SecurityGroups:
-          - "xxxx" #id of default security group vpc
+          - "sg-xxxx" #id of default security group vpc
+    MountTarget3:
+      Type: AWS::EFS::MountTarget
+      Properties:
+        FileSystemId:
+          Ref: "FileSystem"
+        SubnetId: "xxxc" #look in VPC AWS Console and select a subnet
+        SecurityGroups:
+          - "sg-xxxx" #id of default security group vpc
+    MountTarget4:
+      Type: AWS::EFS::MountTarget
+      Properties:
+        FileSystemId:
+          Ref: "FileSystem"
+        SubnetId: "xxxd" #look in VPC AWS Console and select a subnet
+        SecurityGroups:
+          - "sg-xxxx" #id of default security group vpc
+    MountTarget5:
+      Type: AWS::EFS::MountTarget
+      Properties:
+        FileSystemId:
+          Ref: "FileSystem"
+        SubnetId: "xxxe" #look in VPC AWS Console and select a subnet
+        SecurityGroups:
+          - "sg-xxxx" #id of default security group vpc
+    MountTarget6:
+      Type: AWS::EFS::MountTarget
+      Properties:
+        FileSystemId:
+          Ref: "FileSystem"
+        SubnetId: "xxxf" #look in VPC AWS Console and select a subnet
+        SecurityGroups:
+          - "sg-xxxx" #id of default security group vpc
 
