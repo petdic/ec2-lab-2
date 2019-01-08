@@ -3,8 +3,14 @@
 ```
 Contains 2 EC2 Instances along with EBS's (Elastic Block Store) and an EFS (Elastic File Server)
 
-Contains ElasticLoadBalancer
-Ensure ElasticLoadBalancer SecurityGroup is same as Ec2Instance
+Contains ElasticLoadBalancer (classic)
+Ensure ElasticLoadBalancer SecurityGroup is same as Ec2Instances
+
+Contains ElasticLoadBalancerV2 (application)
+Including Listener and TargetGroup
+Ensure ElasticLoadBalancerV2 SecurityGroup is same as Ec2Instances
+Ensure ElasticLoadBalancerV2 has sudbnets for all availability zones.
+Ensure ElasticLoadBalancerTargetGroup has VpcId.
 
 Ensure that MountTargets are in same AvailabilityZones as EC2Instances.
 You can add more MountTargets to ensure all AvailabilityZones are covered.
